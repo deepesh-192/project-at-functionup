@@ -35,9 +35,10 @@ redisClient.on("connect", async function () {
 //2. use the commands :
 
 //Connection setup for redis
-
 const SET_ASYNC = promisify(redisClient.SET).bind(redisClient);
-const GET_ASYNC = promisify(redisClient.GET).bind(redisClient)
+const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
+
+
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Api createurl >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const createurl = async function (req, res) {
   try {
@@ -54,7 +55,7 @@ const createurl = async function (req, res) {
     if (!(val.length == 1 && val[0] == "longUrl"))
       return res.status(400).send({ status: false, message: "Input only longUrl" })
 
-   
+
     let cacheurl = await GET_ASYNC(`${url.longUrl}`)
     if (cacheurl) {
       let abc = JSON.parse(cacheurl)
@@ -62,8 +63,8 @@ const createurl = async function (req, res) {
     }
 
     else if (!cacheurl) {
-      let sameurl = await urlModel.findOne({ longUrl: url.longUrl }).select({ _id: 0,updatedAt:0, createdAt: 0, __v: 0 })
-      
+      let sameurl = await urlModel.findOne({ longUrl: url.longUrl }).select({ _id: 0, updatedAt: 0, createdAt: 0, __v: 0 })
+
       if (sameurl == null) {
         let urlCode = shortid.generate().toLowerCase()
         let baseurl = "http://localhost:3000/"
