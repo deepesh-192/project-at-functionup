@@ -6,7 +6,7 @@ const urlcontroller =require("../controller/urlcontroller")
 
 
 
-// api
+// api>>>>>>>>>
 router.post("/url/shorten",urlcontroller.createurl)
 router.get("/:urlCode",urlcontroller.geturl)
 
