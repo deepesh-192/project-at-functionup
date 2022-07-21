@@ -58,7 +58,7 @@ const createurl = async function (req, res) {
     let cacheurl = await GET_ASYNC(`${url.longUrl}`)
     if (cacheurl) {
       let abc = JSON.parse(cacheurl)
-      return res.status(200).send({ status: true,message: "data data coming from cache", data: abc })
+      return res.status(200).send({ status: true, data: abc })
     }
 
     else if (!cacheurl) {
@@ -77,7 +77,7 @@ const createurl = async function (req, res) {
       }
 
       await SET_ASYNC(`${url.longUrl}`, JSON.stringify(sameurl))
-      return res.status(200).send({ status: true,message: "data data coming from db", data: sameurl })
+      return res.status(200).send({ status: true, data: sameurl })
     }
 
   } catch (err) { return res.status(500).send({ status: false, msg: err.message }) }
@@ -93,13 +93,14 @@ const geturl = async (req, res) => {
     if ((shortid.isValid(codeurl) == false) || (codeurl.length <= 7) || (codeurl.length >= 14)) return res.status(400).send({ status: false, message: "please enter valid urlCode" })
 
     let urlcode1 = await urlModel.findOne({ urlCode: codeurl })
-    if (!urlcode1) return res.status(404).send({ status: false, message: "The link is not present" })
+    if (!urlcode1) return res.status(404).send({ status: false, message: "unable to find url" })
 
     let cacheurl = await GET_ASYNC(`${codeurl}`)
     let data = JSON.parse(cacheurl)
 
     if (cacheurl) {
-      res.redirect(data.longUrl)
+      res.redirect(data.longUr)
+      console.log("from catch")
     } else {
       let findurlcode = await urlModel.findOne({ urlCode: codeurl }).select({ urlCode: 0, _id: 0 });
       await SET_ASYNC(`${codeurl}`, JSON.stringify(findurlcode))
