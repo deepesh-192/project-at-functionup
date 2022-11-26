@@ -7,7 +7,7 @@ const validator = require('validator')
 
 const createIntern = async function (req, res) {
     try {
-        let { name, email, mobile, collegeName } = req.body
+        let { name, email, mobile } = req.body
 
         if (Object.keys(req.body).length == 0) return res.status(400).send({ status: false, msg: "please enter a data in request body" })
 
@@ -31,7 +31,7 @@ const createIntern = async function (req, res) {
 
         if (!/^\w[a-zA-Z.\s]*$/.test(collegeName)) return res.status(400).send({ status: false, msg: "The  collegeName may contain only letters" });
 
-        collegeName = collegeName.toLowerCase();
+          collegeName = collegeName.toLowerCase();
 
         if (typeof collegeName !== "string") return res.status(400).send({ status: false, msg: " Please enter  collegeName as a String" });
 
@@ -46,7 +46,8 @@ const createIntern = async function (req, res) {
         const getCollegeId = await collegeModel.findOne({ name: collegeName });
 
         if (!getCollegeId) return res.status(404).send({ status: false, message: "College not registered" });
-
+        
+// ----------------------------------------------------------
         req.body.collegeId = getCollegeId._id;
 
         let saveData = await internModel.create(req.body)

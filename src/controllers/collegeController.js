@@ -8,7 +8,7 @@ const createCollege = async function (req, res) {
 try{
     let { name, fullName, logoLink } = req.body
 
-    if (Object.keys(req.body).length == 0) return res.status(400).send({status:false,msg:"please enter a data in request body"})
+    if (Object.keys(req.body).length == 0)return res.status(400).send({status:false,msg:"please enter a data in request body"})
     
     if (!name)return res.status(400).send({status:false,msg:"Name is missing"})
 
@@ -62,6 +62,7 @@ const getCollegeDetail = async function (req,res) {
         if(intern.length === 0)  return res.status(404).send({status:false,msg:"intern is not found ."})
 
         let {name,fullName,logoLink} = collegeDetail
+       // let name=collegeDetail.name
 
         return res.status(200).send({status:true, data:{name,fullName,logoLink,intern}})
         
